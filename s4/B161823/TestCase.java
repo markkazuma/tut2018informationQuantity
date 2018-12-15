@@ -29,7 +29,7 @@ public interface InformationEstimatorInterface{
 */
 
 
-public class TestCase {
+public class TestCase{
     public static void main(String[] args) {
 	try {
 	    FrequencerInterface  myObject;
@@ -40,7 +40,13 @@ public class TestCase {
 	    myObject.setTarget("H".getBytes());
 	    freq = myObject.frequency();
 	    System.out.print("\"H\" in \"Hi Ho Hi Ho\" appears "+freq+" times. ");
+        
 	    if(4 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+        
+        int freq2;
+        freq2 = myObject.subByteFrequency( 0, 1);
+        System.out.print("\"H\" in \"H\" appears "+ freq2 + " times. "));
+        if(1 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred: STOP");
