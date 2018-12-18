@@ -45,8 +45,23 @@ public class TestCase{
         
         int freq2;
         freq2 = myObject.subByteFrequency( 0, 1);
-        System.out.print("\"H\" in \"H\" appears "+ freq2 + " times. "));
+        System.out.print("\"H\" in \"H\" appears "+ freq2 + " times. ");
         if(1 == freq) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+        
+        FrequencerInterface new1Object = new s4.B161823.Frequencer();
+        new1Object.setSpace("Hi Ho Hi Ho".getBytes());
+        new1Object.setTarget("".getBytes());
+        int freq3 = new1Object.frequency();
+        System.out.print("When you don't set target and do int freq3 = newObject.frequency() it returns "+freq3+".");
+        if(-1 == freq3) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+        
+        FrequencerInterface new2Object = new s4.B161823.Frequencer();
+        new2Object.setSpace("".getBytes());
+        new2Object.setTarget("H".getBytes());
+        int freq4 = new2Object.frequency();
+        System.out.print("When you don't set SPCE, it return"+freq4+".");
+        if(0 == freq4) { System.out.println("OK"); } else {System.out.println("WRONG"); }
+
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred: STOP");
