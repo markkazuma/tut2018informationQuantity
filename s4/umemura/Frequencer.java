@@ -49,7 +49,7 @@ public class Frequencer implements FrequencerInterface{
 	// if suffix_i > suffix_j, it returns 1
 	// if suffix_i < suffix_j, it returns -1
 	// if suffix_i = suffix_j, it returns 0;
-	// It is not implemented yet, 
+	// It is not implemented yet,
 	// It should be used to create suffix array.
 	// Example of dictionary order
 	// "i"      <  "o"        : compare by code
@@ -57,12 +57,33 @@ public class Frequencer implements FrequencerInterface{
 	// "Ho"     <  "Ho "      ; if the prefix is identical, longer string is big
 	//
 	// ****  Please write code here... ***
-	//
-	return 0; // This line should be modified.
+	if(mySpace[i] < mySpace[j]) {
+		return -1;
+	}if(mySpace[i] > mySpace[j]) {
+	    return 1;
+	  }if(mySpace[i] == mySpace[j]) {
+	    int k = 1;
+	    while(true) {
+	      if(i + k >= mySpace.length || j + k >= mySpace.length) {
+	        break;
+	      }
+	      else if(mySpace[i + k] < mySpace[j + k]) {
+	        return -1;
+	      }
+	      else if(mySpace[i + k] > mySpace[j + k]) {
+	        return 1;
+	      }
+	      else if(mySpace[i + k] == mySpace[j + k]) {
+	        k++;
+	      }
+	    }
+	    return 0;
+	  }
+	return -2; // This line should be modified.
     }
 
-    public void setSpace(byte []space) { 
-	mySpace = space; if(mySpace.length>0) spaceReady = true; 
+    public void setSpace(byte []space) {
+	mySpace = space; if(mySpace.length>0) spaceReady = true;
 	suffixArray = new int[space.length];
 	// put all suffixes  in suffixArray. Each suffix is expressed by one integer.
 	for(int i = 0; i< space.length; i++) {
@@ -72,31 +93,62 @@ public class Frequencer implements FrequencerInterface{
 	//
 	//
 	// ****  Please write code here... ***
-	//
+	for(int i = 0; i < space.length; i++) {
+	    for(int j = i+1; j < space.length; j++) {
+	      int comp = suffixCompare(suffixArray[i],suffixArray[j]);
+	      if(comp == 1) {
+	        int temp = suffixArray[i];
+	        suffixArray[i] = suffixArray[j];
+	        suffixArray[j] = temp;
+	      }
+	      else if(comp == 0) {
+	        if(suffixArray[i] < suffixArray[j]) {
+	          int temp = suffixArray[i];
+	          suffixArray[i] = suffixArray[j];
+	          suffixArray[j] = temp;
+	        }
+	      }
+	    }
+	  }
+
     }
 
     private int targetCompare(int i, int j, int end) {
 	// comparing suffix_i and target_j_end by dictonary order with limitation of length;
-	// if the beginning of suffix_i matches target_i_end, and suffix is longer than target  it returns 0;
-	// if suffix_i > target_i_end it return 1;
-	// if suffix_i < target_i_end it return -1
+	// if the beginning of suffix_i matches target_j, and suffix is longer than target  it returns 0;
+	// if suffix_i > target_j it return 1;
+	// if suffix_i < target_j it return -1
 	// It is not implemented yet.
 	// It should be used to search the apropriate index of some suffix.
 	// Example of search
 	// suffix          target
-        // "o"       >     "i"
-        // "o"       <     "z"
+    // "o"       >     "i"
+    // "o"       <     "z"
 	// "o"       =     "o"
-        // "o"       <     "oo"
+    // "o"       <     "oo"
 	// "Ho"      >     "Hi"
 	// "Ho"      <     "Hz"
 	// "Ho"      =     "Ho"
-        // "Ho"      <     "Ho "   : "Ho " is not in the head of suffix "Ho"
+    // "Ho"      <     "Ho "   : "Ho " is not in the head of suffix "Ho"
 	// "Ho"      =     "H"     : "H" is in the head of suffix "Ho"
 	//
 	// ****  Please write code here... ***
 	//
-	return 0; // This line should be modified.
+    	while(true) {
+    	    if(mySpace[suffixArray[i]] > myTarget[j])
+    	      return -1;
+    	    else if(mySpace[suffixArray[i]] < myTarget[j])
+    	      return 1;
+    	    else if(mySpace[suffixArray[i]] == myTarget[j]) {
+    	      i++; j++;
+    	      if((i >= mySpace.length) && (j >= end))
+    	        return 0;
+    	      else if(i >= mySpace.length)
+    	        return 1;
+    	      else if(j >= end)
+    	        return 0;
+    	    }
+    	  }
     }
 
     private int subByteStartIndex(int start, int end) {
@@ -106,7 +158,14 @@ public class Frequencer implements FrequencerInterface{
 	// For "Ho ", it will return 6 for "Hi Ho Hi Ho".
 	//
 	// ****  Please write code here... ***
-	//
+
+    	for(int i = 0;i < mySpace.length; i++) {
+    		int tc = targetCompare(i, start, end);
+    		if(tc == 0) {
+    			return i;
+    		}
+    	}
+
 	return suffixArray.length; // This line should be modified.
     }
 
@@ -117,7 +176,14 @@ public class Frequencer implements FrequencerInterface{
 	// For "Ho ", it will return 7 for "Hi Ho Hi Ho".
 	//
 	// ****  Please write code here... ***
-	//
+
+    	for(int i = mySpace.length - 1;i >= 0 ;i--) {
+    		int tc = targetCompare(i, start, end);
+    		if(tc == 0) {
+    			return i + 1;
+    		}
+    	}
+
 	return suffixArray.length; // This line should be modified.
     }
 
@@ -138,8 +204,8 @@ public class Frequencer implements FrequencerInterface{
 	return last1 - first;
     }
 
-    public void setTarget(byte [] target) { 
-	myTarget = target; if(myTarget.length>0) targetReady = true; 
+    public void setTarget(byte [] target) {
+	myTarget = target; if(myTarget.length>0) targetReady = true;
     }
 
     public int frequency() {
@@ -181,5 +247,5 @@ public class Frequencer implements FrequencerInterface{
 	    System.out.println("STOP");
 	}
     }
-}	    
-	    
+}
+
