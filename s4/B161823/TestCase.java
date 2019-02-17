@@ -122,6 +122,7 @@ public class TestCase {
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred in Frequencer Object: STOP");
+	    e.printStackTrace();
 	}
 
 	try {
@@ -145,6 +146,7 @@ public class TestCase {
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred: STOP");
+	    e.printStackTrace();
 	}
 	if(c == 0) { System.out.println("TestCase OK"); }
     }

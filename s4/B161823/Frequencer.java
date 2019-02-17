@@ -160,14 +160,38 @@ public class Frequencer implements FrequencerInterface{
 	// For "Ho ", it will return 6 for "Hi Ho Hi Ho".
 	//
 	// ****  Please write code here... ***
+    	int left = 0;
+    	int right = mySpace.length - 1;
 
+    	while(left <= right) {
+
+    		int center = (left + right)/2;
+
+    		if(targetCompare(center, start, end) == 0) {
+    			while(true) {
+    			if(center == 0) {
+    				return 0;
+    			}
+    			if(targetCompare(center - 1, start, end) == 0) {
+    			 center = center - 1;
+    				}else{
+    					return center;
+    			}
+    			}
+    		}else if(targetCompare(center, start, end) == 1) {
+    			left = center + 1;
+    		}else{
+    			right =center - 1;
+    		}
+    	}
+    	/*
     	for(int i = 0;i < mySpace.length; i++) {
     		int tc = targetCompare(i, start, end);
     		if(tc == 0) {
     			return i;
     		}
     	}
-
+*/
 	return suffixArray.length; // This line should be modified.
     }
 
@@ -179,12 +203,37 @@ public class Frequencer implements FrequencerInterface{
 	//
 	// ****  Please write code here... ***
 
-    	for(int i = mySpace.length - 1;i >= 0 ;i--) {
-    		int tc = targetCompare(i, start, end);
-    		if(tc == 0) {
-    			return i + 1;
+    	int left = 0;
+    	int right = mySpace.length - 1;
+
+    	while(left <= right) {
+
+    		int center = (left + right)/2;
+
+    		if(targetCompare(center, start, end) == 0) {
+    			while(true) {
+    			if(center >= mySpace.length - 1 ) {
+        			return suffixArray.length;
+        		}
+    			if(targetCompare(center + 1, start, end) == 0) {
+    			 center = center + 1;
+    				}else{
+    					return center + 1;
+    			}
+    			}
+    		}else if(targetCompare(center, start, end) == 1) {
+    			left = center + 1;
+    		}else{
+    			right =center - 1;
     		}
     	}
+
+//    	for(int i = mySpace.length - 1;i >= 0 ;i--) {
+//    		int tc = targetCompare(i, start, end);
+//    		if(tc == 0) {
+//    			return i + 1;
+//    		}
+//    	}
 
 	return suffixArray.length; // This line should be modified.
     }
